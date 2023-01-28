@@ -1,0 +1,8 @@
+driver=com.mysql.cj.jdbc.Driver
+login=
+password=
+url=jdbc:
+
+hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+hibernate.show_sql=true
+hibernate.hbm2dll_auto=update
