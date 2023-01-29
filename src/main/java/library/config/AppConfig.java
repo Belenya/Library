@@ -7,12 +7,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Objects;
 import java.util.Properties;
@@ -21,6 +23,7 @@ import java.util.Properties;
 @ComponentScan("library")
 @PropertySource("classpath:db.properties")
 @EnableTransactionManagement
+@EnableJpaRepositories("library.repositories")
 public class AppConfig {
 
     private final Environment environment;
@@ -60,10 +63,15 @@ public class AppConfig {
         return new HibernateJpaVendorAdapter();
     }
 
-    @Bean
+    @Bean("transactionManager")
     public JpaTransactionManager getTransactionalManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(getEntityManagerFactory().getObject());
         return  transactionManager;
+    }
+
+    @Bean
+    public EntityManagerFactory entityManagerFactory() {
+        return getEntityManagerFactory().getObject();
     }
 }

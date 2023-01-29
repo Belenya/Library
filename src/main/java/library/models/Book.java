@@ -1,11 +1,28 @@
 package library.models;
 
-//@Entity
+import javax.persistence.*;
+
+@Entity
+@Table(name = "books")
 public class Book {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     private String author;
-    private Short year;
+    private Integer year;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = true)
+    private User user;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -23,11 +40,11 @@ public class Book {
         this.author = author;
     }
 
-    public Short getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(Short year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 

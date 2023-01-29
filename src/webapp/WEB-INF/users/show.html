@@ -1,11 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:text="${user.getFullName()}">User</title>
 </head>
-<body>
-Show
-<a href="/"/>Index</a>
+<body th:align="middle">
+<p th:text="${user.getFullName()}">VALUE</p>
+<p th:text="${user.getYearOfBirth()}">VALUE</p>
+<a th:href="@{{id}/edit(id=${user.getId()})}">Edit</a>
+
+<form th:method="DELETE" th:action="@{{id}(id=${user.getId()})}">
+    <input type="submit" value="Delete"/>
+</form>
+
+<!--<div th:each="user : ${users}">-->
+<!--    <a th:href="@{users/{id}(id=${user.getId()})}" th:text= "${user.getFullName()} + ${user.getYearOfBirth()}">VALUE</a>-->
+<!--</div>-->
+
 </body>
 </html>
