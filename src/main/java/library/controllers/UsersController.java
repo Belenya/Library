@@ -29,7 +29,9 @@ public class UsersController {
 
     @GetMapping("/{id}")
     public String showUser(@PathVariable("id") long id, Model model) {
-        model.addAttribute("user", userService.findById(id));
+        User user = userService.findById(id);
+        model.addAttribute("user", user);
+        model.addAttribute("books", user.getBooks());
         return "users/show";
     }
 
@@ -40,7 +42,10 @@ public class UsersController {
     }
 
     @PostMapping
-    public String createUser(@ModelAttribute User user) {
+    public String createUser(@ModelAttribute @Valid User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "users/edit";
+        }
         userService.save(user);
         return "redirect:/users";
     }
@@ -52,10 +57,10 @@ public class UsersController {
     }
 
     @PatchMapping("{id}")
-    public String update(@ModelAttribute("user") User user, BindingResult bindingResult, @PathVariable("id") long id) {
-//        if (bindingResult.hasErrors()) {
-//            return "users/edit";
-//        }
+    public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "users/edit";
+        }
         userService.update(user);
         return "redirect:/users";
     }

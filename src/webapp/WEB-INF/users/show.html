@@ -1,21 +1,29 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title th:text="${user.getFullName()}">User</title>
 </head>
 <body th:align="middle">
-<p th:text="${user.getFullName()}">VALUE</p>
-<p th:text="${user.getYearOfBirth()}">VALUE</p>
-<a th:href="@{{id}/edit(id=${user.getId()})}">Edit</a>
-
-<form th:method="DELETE" th:action="@{{id}(id=${user.getId()})}">
-    <input type="submit" value="Delete"/>
-</form>
-
-<!--<div th:each="user : ${users}">-->
-<!--    <a th:href="@{users/{id}(id=${user.getId()})}" th:text= "${user.getFullName()} + ${user.getYearOfBirth()}">VALUE</a>-->
-<!--</div>-->
-
+<div>
+    <p th:text="${user.getFullName()} + ', ' + ${user.getYearOfBirth()} ">VALUE</p>
+    <br>
+    <a th:text="${books.size() == 0} ? 'Человек пока не взял ни одной книги.' : 'Книги:'">VALUE</a>
+    <br>
+    <div th:each="book : ${books}">
+        <a th:href="@{/books/{id}(id=${book.getId()})}" th:text= "${book.getName()} + ', ' + ${book.getAuthor()} + ', ' + ${book.getYear()}">VALUE</a>
+    </div>
+    <br>
+    <form th:method="GET" th:action="@{{id}/edit(id=${user.getId()})}">
+        <input type="submit" value="Редактировать"/>
+    </form>
+    <form th:method="DELETE" th:action="@{{id}(id=${user.getId()})}">
+        <input type="submit" value="Удалить"/>
+    </form>
+    <form th:method="GET" th:action="@{/users}">
+        <input type="submit" value="Назад"/>
+    </form>
+<br>
+</div>
 </body>
 </html>

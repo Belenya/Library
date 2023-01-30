@@ -41,6 +41,6 @@ public class BookService implements AbstractService<Book> {
 
     @Override
     public void update(Book book) {
-        repository.updateBook(book.getName(), book.getAuthor(), book.getYear(), book.getId());
+        repository.updateBook(book.getName(), book.getAuthor(), book.getYear(),book.getUser(), book.getId());
     }
 }

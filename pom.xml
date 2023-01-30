@@ -5,6 +5,7 @@
   <artifactId>Library_Maven_Spring_Hibernate</artifactId>
   <packaging>war</packaging>
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>19</maven.compiler.source>
     <maven.compiler.target>19</maven.compiler.target>
   </properties>
