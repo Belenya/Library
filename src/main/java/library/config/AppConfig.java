@@ -54,7 +54,6 @@ public class AppConfig {
         props.setProperty(AvailableSettings.DIALECT, environment.getProperty("hibernate.dialect"));
         props.setProperty(AvailableSettings.SHOW_SQL, environment.getProperty("hibernate.show_sql"));
         props.setProperty(AvailableSettings.HBM2DDL_AUTO, environment.getProperty("hibernate.hbm2dll_auto"));
-//        props.setProperty("hibernate.connection.characterEncoding", environment.getProperty("hibernate.connection.characterEncoding"));
         entityManagerFactoryBean.setJpaProperties(props);
         return entityManagerFactoryBean;
     }

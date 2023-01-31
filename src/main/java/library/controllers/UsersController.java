@@ -46,6 +46,7 @@ public class UsersController {
         if (bindingResult.hasErrors()) {
             return "users/edit";
         }
+        System.out.println(user);
         userService.save(user);
         return "redirect:/users";
     }
@@ -67,9 +68,7 @@ public class UsersController {
 
     @DeleteMapping("{id}")
     public String delete(@PathVariable("id") long id) {
-        User user = new User();
-        user.setId(id);
-        userService.delete(user);
+        userService.delete(userService.findById(id));
         return "redirect:/users";
     }
 }

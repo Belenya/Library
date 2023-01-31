@@ -14,15 +14,15 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Should be not empty.")
-    @Size(min = 2, max = 100, message = "Maximum 100 characters.")
+    @NotEmpty(message = "Название не может быть пустым.")
+    @Size(min = 2, max = 100, message = "Допустимая длинна от 2 до 100 символов.")
     private String name;
 
-    @NotEmpty(message = "Should be not empty.")
-    @Size(min = 2, max = 100, message = "Maximum 100 characters.")
+    @NotEmpty(message = "Автор не может мыть пустым.")
+    @Size(min = 2, max = 100, message = "Допустимая длинна от 2 до 100 символов.")
     private String author;
 
-    @Min(value = 0, message = "Minimum 0.")
+    @Min(value = 1500, message = "Минимальный год 1500.")
     private Integer year;
 
     @ManyToOne(fetch = FetchType.EAGER)

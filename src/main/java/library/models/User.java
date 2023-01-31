@@ -14,14 +14,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Should be not empty.")
-    @Size(min = 2, max = 100, message = "Maximum 100 characters.")
+    @NotEmpty(message = "ФИО не может быть пустым.")
+    @Size(min = 2, max = 100, message = "Допустимая длинна от 2 до 100 символов.")
     private String fullName;
 
-    @Min(value = 0, message = "Minimum 0.")
+    @Min(value = 1911, message = "Минимальный год 1911.")
     private Integer yearOfBirth;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Book> books;
 
     public List<Book> getBooks() {
@@ -56,4 +56,18 @@ public class User {
         this.yearOfBirth = yearOfBirth;
     }
 
+    @PreRemove
+    private void preRemove() {
+        System.out.println(books);
+        books.forEach(book -> book.setUser(null));
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                ", yearOfBirth=" + yearOfBirth +
+                '}';
+    }
 }
