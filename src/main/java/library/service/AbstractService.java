@@ -1,21 +1,18 @@
 package library.service;
 
-import library.models.User;
-import library.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
+
 
 import java.util.List;
 
-public interface AbstractService<T> {
+public interface AbstractService<T, ID> {
 
     List<T> findAll();
 
-    T findById(long id);
+    T findById(ID id);
 
     void save(T obj);
 
-    void delete(T obj);
+    void delete(ID id);
 
     void update(T obj);
 }

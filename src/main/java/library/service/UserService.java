@@ -2,17 +2,16 @@ package library.service;
 
 import library.models.Book;
 import library.models.User;
-import library.repositories.BookRepository;
 import library.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-public class UserService implements AbstractService<User> {
+@Transactional(readOnly = true)
+public class UserService implements AbstractService<User, Long> {
 
     private UserRepository repository;
 
@@ -21,28 +20,31 @@ public class UserService implements AbstractService<User> {
         this.repository = repository;
     }
 
-
+    @Override
     public List<User> findAll() {
         return (List<User>)repository.findAll();
     }
 
     @Override
-    public User findById(long id) {
+    public User findById(Long id) {
         return repository.findById(id).orElse(null);
     }
 
+    @Transactional
     @Override
     public void save(User user) {
         repository.save(user);
     }
 
+    @Transactional
     @Override
-    public void delete(User user) {
-        repository.delete(user);
+    public void delete(Long id) {
+        repository.deleteById(id);
     }
 
+    @Transactional
     @Override
     public void update(User user) {
-        repository.updateUser(user.getFullName(), user.getYearOfBirth(), user.getId());
+        repository.save(user);
     }
 }

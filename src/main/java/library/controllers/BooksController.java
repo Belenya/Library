@@ -2,8 +2,7 @@ package library.controllers;
 
 import library.models.Book;
 import library.models.User;
-import library.service.BookService;
-import library.service.UserService;
+import library.service.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,11 +15,11 @@ import javax.validation.Valid;
 @RequestMapping("books")
 public class BooksController {
 
-    private final BookService bookService;
-    private final UserService userService;
+    private final AbstractService<Book, Long> bookService;
+    private final AbstractService<User, Long> userService;
 
     @Autowired
-    public BooksController(BookService bookService, UserService userService) {
+    public BooksController(AbstractService<Book, Long> bookService, AbstractService<User, Long> userService) {
         this.bookService = bookService;
         this.userService = userService;
     }
@@ -89,7 +88,7 @@ public class BooksController {
     public String delete(@PathVariable("id") long id) {
         Book book = new Book();
         book.setId(id);
-        bookService.delete(book);
+        bookService.delete(id);
         return "redirect:/books";
     }
 }

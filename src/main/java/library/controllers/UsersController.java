@@ -1,6 +1,7 @@
 package library.controllers;
 
 import library.models.User;
+import library.service.AbstractService;
 import library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,10 +15,10 @@ import javax.validation.Valid;
 @RequestMapping("users")
 public class UsersController {
 
-    private final UserService userService;
+    private final AbstractService<User, Long> userService;
 
     @Autowired
-    public UsersController(UserService userService) {
+    public UsersController(AbstractService<User, Long>  userService) {
         this.userService = userService;
     }
 
@@ -68,7 +69,7 @@ public class UsersController {
 
     @DeleteMapping("{id}")
     public String delete(@PathVariable("id") long id) {
-        userService.delete(userService.findById(id));
+        userService.delete(id);
         return "redirect:/users";
     }
 }
