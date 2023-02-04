@@ -1,7 +1,6 @@
 package library.controllers;
 
 import library.models.User;
-import library.service.AbstractService;
 import library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,10 +14,10 @@ import javax.validation.Valid;
 @RequestMapping("users")
 public class UsersController {
 
-    private final AbstractService<User, Long> userService;
+    private final UserService userService;
 
     @Autowired
-    public UsersController(AbstractService<User, Long>  userService) {
+    public UsersController(UserService  userService) {
         this.userService = userService;
     }
 

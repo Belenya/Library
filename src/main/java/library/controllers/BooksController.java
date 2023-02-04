@@ -2,36 +2,56 @@ package library.controllers;
 
 import library.models.Book;
 import library.models.User;
-import library.service.AbstractService;
+import library.service.BookService;
+import library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Controller
 @RequestMapping("books")
 public class BooksController {
 
-    private final AbstractService<Book, Long> bookService;
-    private final AbstractService<User, Long> userService;
+    private final BookService bookService;
+    private final UserService userService;
 
     @Autowired
-    public BooksController(AbstractService<Book, Long> bookService, AbstractService<User, Long> userService) {
+    public BooksController(BookService bookService, UserService userService) {
         this.bookService = bookService;
         this.userService = userService;
     }
 
     @GetMapping
-    public String books(Model model) {
-        model.addAttribute("books", bookService.findAll());
+    public String books(Model model,
+                        @RequestParam(name = "page", defaultValue = "-1") int page,
+                        @RequestParam(name = "books_per_page", defaultValue = "1") int booksPerPage,
+                        @RequestParam(name = "sort_by_year", defaultValue = "false") boolean sortByYear) {
+        List<Book> books = null;
+        if (page == -1 & sortByYear) {
+            books = bookService.findAll(Sort.by(Sort.Direction.ASC, "year"));
+        }
+        if (page > -1 & !sortByYear & booksPerPage > 0) {
+            books = bookService.findAll(PageRequest.of(page, booksPerPage)).getContent();
+        }
+        if (page > -1 & sortByYear & booksPerPage > 0) {
+            books = bookService.findAll(PageRequest.of(page, booksPerPage, Sort.by("year"))).getContent();
+        }
+        model.addAttribute("books", books == null ? bookService.findAll() : books);
         return "books/books";
     }
 
     @GetMapping("/{id}")
-    public String showBook(@PathVariable("id") long id, Model model) {
+    public String showBook(@PathVariable("id") long id,
+                           Model model) {
         model.addAttribute("book", bookService.findById(id));
         model.addAttribute("users", userService.findAll());
         model.addAttribute("emptyUser", new User());
@@ -90,5 +110,14 @@ public class BooksController {
         book.setId(id);
         bookService.delete(id);
         return "redirect:/books";
+    }
+
+    @GetMapping("search")
+    public String searchByName(@RequestParam(name = "name", defaultValue = "") String name, Model model) {
+        model.addAttribute("searchResult", null);
+        if (!name.isEmpty()) {
+            model.addAttribute("searchResult", bookService.findAllByNameContains(name));
+        }
+        return "books/search";
     }
 }

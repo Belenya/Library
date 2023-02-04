@@ -3,6 +3,9 @@ package library.service;
 import library.models.Book;
 import library.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,40 +13,46 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
-public class BookService implements AbstractService<Book, Long> {
+public class BookService {
 
-    private BookRepository repository;
+    private BookRepository bookRepository;
 
     @Autowired
     public BookService(BookRepository repository) {
-        this.repository = repository;
+        this.bookRepository = repository;
     }
 
-    @Override
     public List<Book> findAll() {
-        return (List<Book>) repository.findAll();
+        return (List<Book>) bookRepository.findAll();
     }
 
-    @Override
+    public List<Book> findAll(Sort sort) {
+        return (List<Book>) bookRepository.findAll(sort);
+    }
+
+    public Page<Book> findAll(Pageable pageable) {
+        return bookRepository.findAll(pageable);
+    }
+
+    public List<Book> findAllByNameContains(String string) {
+        return (List<Book>) bookRepository.findByNameContains(string);
+    }
     public Book findById(Long id) {
-        return repository.findById(id).orElse(null);
+        return bookRepository.findById(id).orElse(null);
     }
 
     @Transactional
-    @Override
     public void save(Book book) {
-        repository.save(book);
+        bookRepository.save(book);
     }
 
     @Transactional
-    @Override
     public void delete(Long id) {
-        repository.deleteById(id);
+        bookRepository.deleteById(id);
     }
 
     @Transactional
-    @Override
     public void update(Book book) {
-    repository.save(book);
+    bookRepository.save(book);
     }
 }
