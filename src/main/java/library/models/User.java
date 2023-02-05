@@ -22,8 +22,8 @@ public class User {
 
     @Min(value = 1911, message = "Минимальный год 1911.")
     private Integer yearOfBirth;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    .
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Book> books;
 
     public List<Book> getBooks() {

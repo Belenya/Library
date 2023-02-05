@@ -5,6 +5,10 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.sql.Timestamp;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+import java.util.Objects;
 
 @Entity
 @Table(name = "books")
@@ -29,8 +33,14 @@ public class Book {
     @JoinColumn(name = "user_id")
     private User user;
 
+    private Timestamp timestamp;
+
+    @Transient
+    private boolean isOverdue;
+
     public void setUser(User user) {
         this.user = user;
+        timestamp = Objects.isNull(user) ? null : new Timestamp(System.currentTimeMillis());
     }
 
     public User getUser() {
@@ -67,6 +77,14 @@ public class Book {
 
     public void setYear(Integer year) {
         this.year = year;
+    }
+
+    public boolean isOverdue() {
+        if (!isOverdue & !Objects.isNull(timestamp)) {
+            long overdueDate = Timestamp.valueOf(timestamp.toLocalDateTime().plusDays(10)).getTime();
+            isOverdue = System.currentTimeMillis() >= overdueDate;
+        }
+        return isOverdue;
     }
 
 }

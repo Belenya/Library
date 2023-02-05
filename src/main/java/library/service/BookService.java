@@ -37,6 +37,7 @@ public class BookService {
     public List<Book> findAllByNameContains(String string) {
         return (List<Book>) bookRepository.findByNameContains(string);
     }
+
     public Book findById(Long id) {
         return bookRepository.findById(id).orElse(null);
     }

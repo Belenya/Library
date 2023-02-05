@@ -11,7 +11,7 @@
     <a th:text="${books.size() == 0} ? 'Человек пока не взял ни одной книги.' : 'Книги:'">VALUE</a>
     <br>
     <div th:each="book : ${books}">
-        <a th:href="@{/books/{id}(id=${book.getId()})}" th:text= "${book.getName()} + ', ' + ${book.getAuthor()} + ', ' + ${book.getYear()}">VALUE</a>
+        <a th:style="${book.isOverdue() ? 'color:red' : 'color:black'}" th:href="@{/books/{id}(id=${book.getId()})}" th:text= "${book.getName()} + ', ' + ${book.getAuthor()} + ', ' + ${book.getYear()}">VALUE</a>
     </div>
     <br>
     <form th:method="GET" th:action="@{{id}/edit(id=${user.getId()})}">

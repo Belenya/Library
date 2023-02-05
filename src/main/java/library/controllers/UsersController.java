@@ -29,9 +29,8 @@ public class UsersController {
 
     @GetMapping("/{id}")
     public String showUser(@PathVariable("id") long id, Model model) {
-        User user = userService.findById(id);
-        model.addAttribute("user", user);
-        model.addAttribute("books", user.getBooks());
+        model.addAttribute("user", userService.findById(id));
+        model.addAttribute("books", userService.getUsersBooksById(id));
         return "users/show";
     }
 
